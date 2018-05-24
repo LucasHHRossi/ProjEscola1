@@ -9,7 +9,9 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import br.com.projescola1.db.AlunoDB;
 import br.com.projescola1.model.Aluno;
+import br.com.projescola1.model.Cidade;
 
 
 @WebServlet("/ControllerAluno")
@@ -18,36 +20,44 @@ public class ControllerAluno extends HttpServlet {
 
    
     public ControllerAluno() {
-   
+   super();
     }
 
 
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 	
-		
-		
 	}
 
 
 
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 
-			PrintWriter out = response.getWriter();
-			out.print("<html>");
-			out.print("<title>");
-			out.print(" Meu Servlet ");
-			out.print("</title>");
-			out.print("<head>");
-			out.print("</head>");
-			out.print("<body>");
-			out.print(" Meu Servlet!");
-			out.print("</body>");
-			out.print("</html>");
+	
+		
+	int idCidade = Integer.parseInt(request.getParameter("selectCidade"));
+		
+		String nome = request.getParameter("nome");
+		String telefone= request.getParameter("telefone");
+		int nota=Integer.parseInt(request.getParameter("nota"));
+		
+		Aluno aluno = new Aluno();
+		aluno.setNome(nome);
+		aluno.setTelefone(telefone);
+		aluno.setNota(nota);
+		aluno.setCidade(new Cidade(idCidade));
+		
+		
+		if(new AlunoDB().insert(aluno)) {
+			request.setAttribute("msg", "Registro Inserido com sucesso!");
+			request.getRequestDispatcher("CadastroAluno.jsp").forward(request, response);
 			
-			int idCidade = 
-					Interger.parsetInt(request.getParameter("idCidade"));
-					Aluno a = new Aluno();
-					Cidade c = new Cidade();
-					a.setCidade(new Cidade(idCidade));
+		}else {
+			request.setAttribute("msg", "Erro ao Inserir Registro!");
+			request.getRequestDispatcher("CadastroAluno.jsp").forward(request, response);
+		}
+			
+			
+			
+			
 	}
 }

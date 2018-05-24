@@ -10,6 +10,10 @@ public class Cidade {
 	public Cidade() {
 		
 	}
+	
+	public Cidade(String nome) {
+		this.nome=nome;
+	}
 public Cidade(int id) {
 		this.id=id;
 	}
